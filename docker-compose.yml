@@ -1,92 +1,31 @@
 version: "3.9"
+
 services:
-  rsync-cron:
-    build:
-      context: ./.docker
-      dockerfile: rs-cron.Dockerfile
-    container_name: rsync-cron-ubuntu
-    restart: always
-    volumes:
-        - /mnt/nas/mirror:/mnt/mirror/
-    networks:
-    - homenetwork
-  
   rsync-crond:
     build:
-      context: ./rsync-cron-alpine
-      dockerfile: Dockerfile
-    image: rsync-crond-alpine:latest
+      context: ./rsync-alpine
     container_name: rsync-crondaemon
-    restart: always
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Singapore
+    restart: unless-stopped
     volumes:
-      - ./rsync-cron-alpine/scripts/hello-world:/etc/periodic/1min/:ro
-      - ./rsync-cron-alpine/mirror:/etc/periodic/mirror/:ro
-      - /mnt/nas/mirror:/mnt/mirror/
-    networks:
-    - homenetwork
-  
+      - /mnt/local/raid/mirror:/mirror
+
   rsyncd:
     build:
       context: ./rsyncd
-      dockerfile: rsyncd.Dockerfile
     container_name: rsyncd
-    restart: always
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Singapore
+    restart: unless-stopped
+    ports:
+      - "873:873"
     volumes:
-      - ./rsyncd/config:/config
-      - ./rsyncd/log:/log
-      - /mnt/nas/mirror/pub:/data
-    networks:
-      - homenetwork
-    ports:
-    - "873:873"
+      - /opt/mirror/rsyncd/config:/config
+      - /opt/mirror/rsyncd/log:/log
+      - /mnt/local/raid/mirror:/mirror
 
-  
-  caddy2:
-    image: caddy:2.4.3-alpine
-    container_name: caddy2-mirror
-    cap_add:
-      - NET_ADMIN
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Singapore
-    restart: always
-    volumes:  
-      - ./caddy/caddy:/etc/caddy
-      - ./caddy/site:/srv 
-      - caddy_data:/data
-      - caddy_config:/config
-      - /mnt/nas/mirror/pub:/var/www/mirror
-    networks:
-      - homenetwork
-    ports:
-    - "9004:80"
-    - "9005:443"
-    labels:
-      - traefik.enable=true
-      - traefik.http.routers.nginx-mirror.rule=Host(`mirror.jingk.ai`)
-      - traefik.http.routers.nginx-mirror.entrypoints=http
-      - traefik.http.routers.nginx-mirror.service=nginx-mirror-service
-      - traefik.http.services.nginx-mirror-service.loadbalancer.server.port=80
-      # We already have an existing traefik infront of us
-      # In that case since caddy provisions the ssl cert for mirror.jingk.ai from lets encrypt
-      # We tell traefik to run in L4 mode and forward traffic to caddy.
-      - "traefik.tcp.routers.nginx-mirrors.rule=HostSNI(`mirror.jingk.ai`)"
-      - "traefik.tcp.routers.nginx-mirrors.tls.passthrough=true"
-      - "traefik.tcp.services.nginx-mirrors.loadbalancer.server.port=443"
+  nginx:
+    build:
+      context: ./nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - /mnt/local/raid/mirror:/usr/share/nginx/html:ro
 
-volumes:
-  caddy_data:
-    external: true
-  caddy_config:
-networks:
-    homenetwork:
-        external: true

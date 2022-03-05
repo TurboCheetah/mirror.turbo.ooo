@@ -1,14 +1,14 @@
 # Taken from https://github.com/mettke/dockerfiles/tree/master/rsyncd-alpine
 # not updated to latest container for over a year.
-FROM alpine:3.13
-LABEL maintainer="Jingkai Tan <contact@jingk.ai>"
+FROM alpine:3.15
+LABEL maintainer="Turbo <dev@turbo.ooo>"
 
 RUN apk --no-cache add rsync && \
-    mkdir -p /config /data /log && \
+    mkdir -p /config /mirror /log && \
     cp /etc/rsyncd.conf /config
 
 EXPOSE 873
-VOLUME /data
+VOLUME /mirror
 VOLUME /config
 VOLUME /log
 

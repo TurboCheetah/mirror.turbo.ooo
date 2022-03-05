@@ -1,24 +1,15 @@
-# mirror.jingk.ai
+# mirror.turbo.ooo
 
-A linux mirror in the Singapore region.
+Scripts for running mirrors of various Linux distributions.
 
-Inspired by my friends running mirrors:
-- [Andrew](https://mirror.0x.sg) 
-- [Kenny](https://mirror.aktkn.sg) 
-- [Likang](https://mirror.kst.asia/)
+Forked from [mirror.jingk.ai](https://github.com/xlanor/mirror.jingk.ai)
 
 
 ### Why run a mirror?
 
-Too many of the smaller distributions that I utilise have only one mirror in the region. 
+The goal of this mirror is to increase coverage for less popular linux distros in South America.
 
-As several of my colleagues use Arch and alpine quite frequently, I decided it was probably simpler to set up my own mirror to resolve any synchronisation issues.
-
-The goal of this mirror is to increase coverage for less popular linux distros in Singapore. As such, I will try not to sync distributions that already have many good and existing mirrors in SG, unless I am personally using them.
-
-You can check my mirror status from [Archlinux](https://archlinux.org/mirrors/jingk.ai/) here.
-
-| [Http](http://mirror.jingk.ai)  | [Https](https://mirror.jingk.ai) | [Rsync](rsync://mirror.jingk.ai) |
+| [Http](http://mirror.turbo.ooo)  | [Https](https://mirror.turbo.ooo) | [Rsync](rsync://mirror.turbo.ooo) |
 | ------------- | ------------- | ------------- | 
 | :white_check_mark:	 | :white_check_mark:	 | :white_check_mark: | 
 
@@ -26,25 +17,6 @@ The following packages are mirrored:
 
 | OS  | Upstream |  Target  |   Initial Sync  | 
 | ------------- | ------------- |  ------------- |  ------------- | 
-| [Arch Linux](https://archlinux.org) | [UC Berkerly](https://archlinux.org/mirrors/ocf.berkeley.edu/) |  Full Mirror | ✅ |
-| [Void Linux](https://voidlinux.org) | [Void Linux EU](https://alpha.de.repo.voidlinux.org/) |  Full Mirror | ❎  | 
-| [Rocky Linux](https://rockylinux.org) | [Rackspace HKG](https://hkg.mirror.rackspace.com/rocky) | Full Mirror | ✅ | 
-| [EndeavourOS](https://endeavouros.com) | [Alpix](https://mirror.alpix.eu/endeavouros/) | Full Mirror | ✅ | 
-| [MXLinux](https://mxlinux.org/) | [Rochester Institute of Technology](https://mirrors.rit.edu/mxlinux/) | Full Mirror | ✅ | 
-| [ZorinOS](https://zorin.com/os/) | [ZorinOS Tier 1 Upstream] | ISOs | ✅ | 
+| [Void Linux](https://voidlinux.org) | [ServerCentral Chicago](https://mirrors.servercentral.com/voidlinux/) |  Full Mirror | :white_check_mark:  | 
 
-The homelab equipment powering this mirror
-
-| Part  | Details | 
-| ------------- | ------------- | 
-| Server | i7-7980xe, 64gb DDR4 | 
-| Storage | CIFS to a ZFS pool made up of HGST 10tbs and Seagate Ironwolf Pros | 
-| Switch | Cisco SG300-10P | 
-| Router | Ubiqutti Dream Machine | 
-| Network | 1GbE ViewQwest | 
-
-In this setup, Caddy is ran as a webserver, with traefik sitting in front as a reverse proxy (for my other services).
-
-You can run Caddy standalone as a webserver/rproxy. This implementation is due to my existing setup with traefik.
-
-The cronjob is temporarily set to run on every hour. I am currently rewriting the cron container to run in a more lightweight setting and pull on a randomised minute, following which the mirror will sync on a 4 hour interval.
+*Note you will need to adjust this setup as it has been created to suit my needs and existing setup.*
