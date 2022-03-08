@@ -1,4 +1,4 @@
 23 2-5 * * * ionice -c 3 rsync -rlptHh --chmod=a+rX --chmod=ug+w --safe-links --delete-delay --delay-updates --progress --safe-links rsync://mirrors.servercentral.com/voidlinux/ /mirror/voidlinux/ >> /var/log/voidlinux.log 2>&1
 48 4 * * * ionice -c 3 rsync -rlptHh --chmod=a+rX --chmod=ug+w --safe-links --delete-delay --delay-updates --progress --safe-links rsync://mirror1.artixlinux.org/artix-linux/ /mirror/artix-linux/ >> /var/log/artix-linux.log 2>&1
 8 2 * * * ionice -c 3 rsync -rlptHh --chmod=a+rX --chmod=ug+w --safe-links --delete-delay --delay-updates --progress --safe-links rsync://arch.mirror.constant.com/archlinux/ /mirror/archlinux/ >> /var/log/archlinux.log 2>&1
-16 5 * * * ionice -c 3 rsync -rlptHh --chmod=a+rX --chmod=ug+w --safe-links --delete-delay --delay-updates --progress --safe-links rsync://mirror.rackspace.com/gentoo/ /mirror/gentoo/ >> /var/log/gentoo.log 2>&1
+16 5 * * * ionice -c 3 rsync -rlptHh --chmod=a+rX --chmod=ug+w --safe-links --delete-delay --delay-updates --progress --safe-links 	rsync://mirror.leaseweb.com/gentoo/ /mirror/gentoo/ >> /var/log/gentoo.log 2>&1
